@@ -1,0 +1,204 @@
+<style>
+div#wrapper {
+	width: 1100px;
+	margin: 0 auto;
+}
+
+div#teams {
+	width: 400px;
+	float: left;
+	cursor: pointer;
+}
+
+/* gif Container 
+===================== */
+
+div#gifContainer {
+	width: 700px;
+	float: right;
+}
+
+table#team_gifList {
+	width: 100%;
+}
+
+table#team_gifList tr:last-child {
+	border-bottom: 2px solid black;
+}
+
+table#team_gifList th {
+	font-weight: bold;
+}
+
+table#team_gifList td {
+	border-top: 2px solid black;
+	padding: 5px 0;
+}
+
+table#team_gifList td:first-child {
+	padding-right: 10px;
+	padding-left: 5px;
+}
+
+table#team_gifList a {
+	text-decoration: none;
+}
+
+/* ^ gif Container ^ */
+
+#teams img {
+	height: 60px;
+	width: 80px;
+}
+
+.highlight {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	border: 3px solid #FF0;
+}
+
+.highlight_back {
+	background-color: #FF0;
+}
+
+#header {
+	height: 75px;
+	margin-bottom: 30px;
+	background-color: #626262;
+		background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#626262) to(#000));
+		background-image: -webkit-linear-gradient(top, #626262, #000);
+		background-image: -moz-linear-gradient(top, #626262, #000);
+		background-image: -ms-linear-gradient(top, #626262, #000);
+		background-image: -o-linear-gradient(top, #626262, #000);
+	border-top: 1px solid black;
+	position: relative;
+}
+
+#header h1 {
+	font-size: 36px;
+	position: absolute;
+	left: 80px;
+	top: 25px;
+	font-variant: small-caps;
+	font-weight: bold;
+	color: white;
+}
+</style>
+
+<script>
+// Brings lowercase to TitleCase
+function toTitleCase(str) {
+    return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+}
+
+// Hide the table underneath
+$(function() {
+	$("#gifList").hide();
+});
+
+// Add highlight on hover
+$(function() {
+	$("#teams img").hover(function() {
+		$(this).addClass("highlight");
+	}, function() {
+		$(this).removeClass("highlight");
+	});
+});
+
+// Fade icons on click
+$(function() {
+	$("#teams img").click(function() {
+		$(this).animate({opacity: 1}, 1000);
+		$("#teams img").not(this).animate({opacity: .3}, 1000);
+	});
+});
+
+// Highlight the active gifContainer table row
+$(function() {
+	$("#gifContainer").delegate("table tbody tr", "mouseenter", function() {
+		$(this).addClass("highlight_back");
+	});
+});
+$(function() {
+	$("#gifContainer").delegate("table tbody tr", "mouseleave", function() {
+		$(this).removeClass("highlight_back");
+	});
+});
+
+// Load the rows into the gifContainer
+$(function() {
+	$("#teams img").click(function() {
+		$("#team_gifList").html("");
+		var curTeam = toTitleCase($(this).attr("id"));
+		var htmlString = "<tr><th>Player</th><th>Description</th><th></th></tr>";
+		$.get("/gifs.json?team=" + curTeam, function(data) {
+			$.each(data, function(index, gif) {
+				htmlString += "<tr><td>" + gif.player + "</td><td>" + gif.description + "</td><td><a href='/gifs/" + gif.id + "' target='_blank'>Show</a></td></tr>";
+			});
+			$("#team_gifList").prepend(htmlString);
+		});
+	});
+});
+
+</script>
+
+<div id="header">
+	<h1>NFL .gif Archive</h1>
+</div>	
+
+<div id="wrapper">
+	
+<div id="teams">
+<table>
+<!-- <tr><th>AFC East</th></tr> -->
+<tr><td><%= image_tag('/logos/patriots.gif', :id => "patriots") %></td>
+	<td><%= image_tag('/logos/jets.gif', :id => "jets") %></td>
+	<td><%= image_tag('/logos/dolphins.gif', :id => "dolphins") %></td>
+	<td><%= image_tag('/logos/bills.gif', :id => "bills") %></td></tr>
+<!-- <tr><th>AFC North</th></tr> -->
+<tr><td><%= image_tag('/logos/ravens.gif', :id => "ravens") %></td>
+	<td><%= image_tag('/logos/steelers.gif', :id => "steelers") %></td>
+	<td><%= image_tag('/logos/bengals.gif', :id => "bengals") %></td>
+	<td><%= image_tag('/logos/browns.gif', :id => "browns") %></td></tr>
+<!-- <tr><th>AFC South</th></tr> -->
+<tr><td><%= image_tag('/logos/texans.gif', :id => "texans") %></td>
+	<td><%= image_tag('/logos/titans.gif', :id => "titans") %></td>
+	<td><%= image_tag('/logos/jaguars.gif', :id => "jaguars") %></td>
+	<td><%= image_tag('/logos/colts.gif', :id => "colts") %></td></tr>
+<!-- <tr><th>AFC West</th></tr> -->
+<tr><td><%= image_tag('/logos/broncos.gif', :id => "broncos") %></td>
+	<td><%= image_tag('/logos/chargers.gif', :id => "chargers") %></td>
+	<td><%= image_tag('/logos/raiders.gif', :id => "raiders") %></td>
+	<td><%= image_tag('/logos/chiefs.gif', :id => "chiefs") %></td></tr>
+<!-- <tr><th>NFC East</th></tr> -->
+<tr><td><%= image_tag('/logos/giants.gif', :id => "giants") %></td>
+	<td><%= image_tag('/logos/cowboys.gif', :id => "cowboys") %></td>
+	<td><%= image_tag('/logos/eagles.gif', :id => "eagles") %></td>
+	<td><%= image_tag('/logos/redskins.gif', :id => "redskins") %></td></tr>
+<!-- <tr><th>NFC North</th></tr> -->
+<tr><td><%= image_tag('/logos/packers.gif', :id => "packers") %></td>
+	<td><%= image_tag('/logos/lions.gif', :id => "lions") %></td>
+	<td><%= image_tag('/logos/bears.gif', :id => "bears") %></td>
+	<td><%= image_tag('/logos/vikings.gif', :id => "vikings") %></td></tr>
+<!-- <tr><th>NFC South</th></tr> -->
+<tr><td><%= image_tag('/logos/saints.gif', :id => "saints") %></td>
+	<td><%= image_tag('/logos/falcons.gif', :id => "falcons") %></td>
+	<td><%= image_tag('/logos/panthers.gif', :id => "panthers") %></td>
+	<td><%= image_tag('/logos/buccaneers.gif', :id => "bucaneers") %></td></tr>
+<!-- <tr><th>NFC West</th></tr> -->
+<tr><td><%= image_tag('/logos/49ers.gif', :id => "49ers") %></td>
+	<td><%= image_tag('/logos/seahawks.gif', :id => "seahawks") %></td>
+	<td><%= image_tag('/logos/cardinals.gif', :id => "cardinals") %></td>
+	<td><%= image_tag('/logos/rams.gif', :id => "rams") %></td></tr>
+</table>
+</div> <!-- teams -->	
+
+<div id="gifContainer">
+	<table id="team_gifList">		
+	</table>	
+</div> <!-- gifContainer -->
+
+</div> <!-- wrapper -->
+
+<!-- method: :delete, data: { confirm: 'Are you sure?' } -->

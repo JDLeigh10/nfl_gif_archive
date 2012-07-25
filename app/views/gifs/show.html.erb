@@ -1,0 +1,47 @@
+<style>
+
+#gifContainer { 
+	width: 1000px;
+	position: relative;
+	margin: 40px auto 0 auto;
+}
+
+#gifInfo {
+	width: 47.5%;
+	position: relative;
+	float: left;
+}
+
+table#gifInfo td {
+	padding: 10px 10px 10px 0;
+}
+
+table#gifInfo td:first-child {
+	font-weight: bold;
+}
+
+#gifImage {
+	width: 47.5%;
+	position: relative;
+	float: right;
+}
+</style>
+
+<p id="notice"><%= notice %></p>
+
+<div id="gifContainer">
+
+	<table id="gifInfo">
+		<tbody>
+		<tr><td>Team</td><td><%= @gif.team %></td></tr>
+		<tr><td>Player</td><td><%= @gif.player %></td></tr>
+		<tr><td>Description</td><td><%= @gif.description %></td></tr>	
+		<tr><td>Context</td><td></td></tr>	
+		<tr><td><%= link_to 'Edit', edit_gif_path(@gif) %></td><td><%= link_to 'Back', gifs_path %></td></tr>	
+	</table>
+
+	<div id="gifImage">
+		<%= image_tag(@gif.url) %>
+	</div>
+		
+</div>
